@@ -10,5 +10,10 @@ import androidx.room.PrimaryKey
 )
 data class TripEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val name: String
+    val name: String,
+    val startDateEpochDay: Long,
+    val endDateEpochDay: Long?,
+    val coverImageUrl: String?,
+    val archived: Boolean,
+    val createdAtEpochMillis: Long
 )

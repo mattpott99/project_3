@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.travelmemories.data.local.AppDatabase
 import com.example.travelmemories.data.repository.MediaSmokeTestRepository
+import com.example.travelmemories.data.repository.TripRepository
 import com.example.travelmemories.data.storage.FileStorage
 
 class AppContainer(context: Context) {
@@ -13,7 +14,9 @@ class AppContainer(context: Context) {
         appContext,
         AppDatabase::class.java,
         "travel_memories.db"
-    ).build()
+    )
+        .addMigrations(AppDatabase.MIGRATION_1_2)
+        .build()
 
     private val fileStorage = FileStorage(appContext)
 
@@ -21,4 +24,6 @@ class AppContainer(context: Context) {
         fileStorage = fileStorage,
         mediaReferenceDao = database.mediaReferenceDao()
     )
+
+    val tripRepository = TripRepository(database.tripDao())
 }

@@ -2,20 +2,23 @@ package com.example.travelmemories.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.travelmemories.di.AppContainer
 import com.example.travelmemories.ui.screens.ErrorScreen
-import com.example.travelmemories.ui.screens.HomeScreen
-import com.example.travelmemories.ui.screens.PlaceholderScreen
+import com.example.travelmemories.ui.screens.TripDetailScreen
+import com.example.travelmemories.ui.screens.TripLibraryScreen
 import com.example.travelmemories.ui.state.AppStartupState
-import com.example.travelmemories.ui.viewmodel.MainViewModel
+import com.example.travelmemories.ui.viewmodel.TripLibraryViewModel
 
 private object Routes {
-    const val Home = "home"
-    const val Placeholder = "placeholder"
+    const val Library = "library"
+    const val TripDetail = "trip/{tripId}"
+
+    fun tripDetail(tripId: Long) = "trip/$tripId"
 }
 
 @Composable
@@ -29,17 +32,32 @@ fun TravelMemoriesNavHost(startupState: AppStartupState) {
 @Composable
 private fun AppNavHost(container: AppContainer) {
     val navController = rememberNavController()
-    val viewModel = remember(container) { MainViewModel(container.mediaSmokeTestRepository) }
+    val viewModel = remember(container) { TripLibraryViewModel(container.tripRepository) }
 
-    NavHost(navController = navController, startDestination = Routes.Home) {
-        composable(Routes.Home) {
-            HomeScreen(
+    NavHost(navController = navController, startDestination = Routes.Library) {
+        composable(Routes.Library) {
+            TripLibraryScreen(
                 viewModel = viewModel,
-                onNavigatePlaceholder = { navController.navigate(Routes.Placeholder) }
+                onOpenTrip = { tripId ->
+                    viewModel.setActiveTrip(tripId)
+                    navController.navigate(Routes.tripDetail(tripId))
+                }
             )
         }
-        composable(Routes.Placeholder) {
-            PlaceholderScreen(onNavigateBack = { navController.popBackStack() })
+        composable(
+            route = Routes.TripDetail,
+            arguments = listOf(navArgument("tripId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val tripId = backStackEntry.arguments?.getLong("tripId") ?: return@composable
+            TripDetailScreen(
+                tripId = tripId,
+                viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() },
+                onArchiveTrip = {
+                    viewModel.archiveTrip(tripId)
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
