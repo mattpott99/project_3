@@ -1,0 +1,113 @@
+## Coding Agent Prompt (Source of Truth) — M2: Spatial Backbone (Trip Map & Timeline)
+
+**ROLE**  
+You are a coding agent implementing **Milestone M2 — Spatial Backbone (Trip Map & Timeline)** for the **Travel Memories** mobile-first app.
+
+You must implement **only what is explicitly in scope**.  
+Do not speculate about future milestones.
+
+---
+
+### 🎯 Goal
+
+Implement the **per-Trip spatial + temporal backbone**:
+- A Trip-scoped **map view**
+- A Trip-scoped **timeline view**
+- A lightweight model for **Trip locations / path**
+- Progressive disclosure suitable for **mobile**
+
+This milestone creates the structure that later artifacts (journals/photos/people/etc.) will attach to.
+
+---
+
+### 📦 In Scope (Must Implement)
+
+#### 1) Per-Trip Map View (Trip-scoped only)
+For an active Trip:
+- Provide a map view that supports:
+  - pan + zoom
+  - an “overview” framing for the trip
+  - progressive disclosure (overview → focused detail)
+- Display **only** spatial data belonging to the active Trip.
+- Trips with **no spatial data** must still render a valid map view (graceful empty state).
+
+#### 2) Trip Locations / Path (Lightweight)
+Support a sequence of **Trip locations** (waypoints) that:
+- belong to exactly one Trip
+- have an optional timestamp
+- tolerate gaps (sparse, incomplete, non-continuous)
+- can be added explicitly by the user (no background tracking)
+
+No continuous GPS tracing is required.
+
+#### 3) Timeline View (Temporal spine)
+For an active Trip:
+- Provide a timeline view that represents passage of time across the Trip
+- Timeline must tolerate:
+  - missing timestamps
+  - fuzzy/partial chronology
+- Timeline must be usable even if few or no locations exist
+- Timeline and map should be loosely linked (time ↔ space), without rigid enforcement
+
+#### 4) Trip Switching / State Isolation
+- Switching between Trips must cleanly reset/replace map + timeline state
+- No cross-trip data leakage is permitted
+
+---
+
+### 🚫 Explicitly Out of Scope (Do NOT Implement)
+
+- Journal entries, photo stacks, or any memory artifacts
+- People
+- Accommodations or transport segments
+- Music
+- Relive Mode or Wrapped
+- AI assistance
+- Multi-trip global map overlays
+- Sharing/export/analytics
+- Background location tracking or automatic route detection
+
+This milestone is **structural**, not emotional or analytical.
+
+---
+
+### 🧠 Data & Ownership Rules
+
+- All spatial and timeline data is **owned by a Trip**
+- Spatial data cannot exist outside a Trip scope
+- No global aggregation of trip locations is allowed in M2
+- Missing/partial data must be treated as normal, not error states
+
+---
+
+### ⚠️ Error Handling & Edge Cases
+
+You must handle:
+- Locations with no timestamps (still render on map)
+- Multiple locations with identical timestamps
+- Non-chronological additions
+- Trips with only one location
+- Trips with zero locations (map + timeline still work)
+- Trip switching mid-use without lingering state
+
+---
+
+### ✅ Exit / Validation Criteria
+
+You are done when:
+- Each Trip has a working map view and timeline view
+- Users can add and view Trip locations per Trip
+- Timeline and map are both usable independently
+- The system tolerates incomplete or messy real-world data
+- Switching Trips shows only that Trip’s spatial/timeline data
+- No out-of-scope features are implemented
+
+---
+
+### 📤 Required Output Format
+
+When finished, report:
+1. **Scope implemented**
+2. **Files added/changed**
+3. **Validation steps performed**
+4. **Confirmation that out-of-scope items were NOT implemented**

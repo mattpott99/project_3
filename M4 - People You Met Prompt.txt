@@ -1,0 +1,126 @@
+## Coding Agent Prompt (Source of Truth) — M4: People You Met
+
+**ROLE**  
+You are a coding agent implementing **Milestone M4 — People You Met** for the **Travel Memories** mobile-first app.
+
+You must implement **only what is explicitly in scope**.  
+Do not speculate about future milestones.
+
+---
+
+### 🎯 Goal
+
+Implement the **People** layer:
+- A lightweight **Person** profile entity (user-owned, private)
+- Ability to **tag/associate People** with Trip artifacts (Journal Entries and Photo Stacks)
+- Ability for a Person to appear across **multiple Trips**
+- A **Person detail view** showing where/when they appear (timeline + map highlights when locations exist)
+
+This milestone adds human context without becoming a social network.
+
+---
+
+### 📦 In Scope (Must Implement)
+
+#### 1) Person Entity (Global to user)
+A Person represents someone the user met while traveling.
+
+Fields:
+- Name (**required**)
+- Optional photo
+- Optional notes
+- Creation timestamp
+
+Rules:
+- People are **user-owned** and **private**
+- People are **global** (may appear across multiple Trips)
+- **Person names must be unique per user** (duplicates not allowed)
+
+---
+
+#### 2) Associations to Trip Content
+Users can associate People with:
+- Journal Entries
+- Photo Stacks
+
+Association rules:
+- Optional
+- Many-to-many (many People per artifact; many artifacts per Person)
+- Editable (add/remove associations anytime)
+
+No inference: user-driven tagging only.
+
+---
+
+#### 3) Person View
+Provide a Person detail view that shows:
+- Person identity (name/photo/notes)
+- Trips they appear in
+- A chronological list of associated moments (from artifacts)
+- Map highlights for associated moments that have locations (Trip-scoped when viewing within a Trip; may show per-trip map snippets or a filtered view depending on your UI architecture)
+
+This view is read-only with respect to narrative playback; editing is limited to Person fields and association management as needed to fulfill scope.
+
+---
+
+#### 4) Creation Flows
+Users must be able to create People:
+- From a Journal Entry flow (e.g., “tag person” → create new)
+- From a Photo Stack flow (e.g., “tag person” → create new)
+- From a dedicated “Add Person” entry point
+
+---
+
+### 🚫 Explicitly Out of Scope (Do NOT Implement)
+
+- Messaging or communication
+- Contact details (phone/email/social handles)
+- Public profiles, discovery, or friend graphs
+- Syncing with phone contacts
+- AI detection of people in photos
+- Sharing/export
+- Analytics or summaries
+
+People are **memory anchors**, not social accounts.
+
+---
+
+### 🧠 Data & Ownership Rules
+
+- People are global to the user account
+- Trips and artifacts reference People by ID
+- Deleting a Person removes references but does not delete artifacts
+- A Person must not require a Trip to exist once created, but the UI should prevent creating People that are never referenced (or at minimum, handle them gracefully)
+
+---
+
+### ⚠️ Error Handling & Edge Cases
+
+You must handle:
+- Attempt to create Person with duplicate name → block with clear feedback
+- Artifacts referencing deleted People → degrade gracefully (no crashes; references removed)
+- Person associated with artifacts across multiple Trips → Person view reflects correct grouping
+- Person with only name (no photo/notes) → valid
+- Removing all associations from a Person → Person remains unless explicitly deleted
+
+---
+
+### ✅ Exit / Validation Criteria
+
+You are done when:
+- Users can create People profiles (unique names per user)
+- Users can tag People in Journal Entries and Photo Stacks
+- People can appear across multiple Trips
+- Person detail view shows trips + moments + map highlights when locations exist
+- Deleting People removes references without corrupting artifacts
+- No out-of-scope social features are implemented
+
+---
+
+### 📤 Required Output Format
+
+When finished, report:
+1. **Scope implemented**
+2. **Files added/changed**
+3. **Validation steps performed**
+4. **Confirmation that out-of-scope items were NOT implemented**

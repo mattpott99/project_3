@@ -1,0 +1,114 @@
+# Coding Agent Prompt — M1: Trip Foundation & Navigation
+
+## Role
+You are a coding agent implementing **Milestone M1 — Trip Foundation & Navigation**
+for a mobile-first Travel Memories app.
+
+You must implement ONLY what is explicitly in scope.
+Do not speculate about or prepare for future milestones.
+
+---
+
+## Goal
+Implement the Trip foundation layer:
+- Trip entity
+- Trip library (home)
+- Trip navigation & scoping
+
+This milestone establishes the structural backbone for all future features.
+
+---
+
+## In Scope (Must Implement)
+
+### Trip Entity
+A Trip must have:
+- **Unique name per user (duplicates NOT allowed)**
+- Start date (required)
+- End date (optional)
+- Optional cover image
+- Archived flag (soft delete)
+- Creation timestamp
+
+Trips are:
+- User-owned
+- Private
+- Independent
+
+---
+
+### Trip Library (Home State)
+The app must provide:
+- A Trip Library as the default entry point
+- Ability to:
+  - Create a Trip
+  - View all Trips
+  - Open a Trip
+  - Archive and restore a Trip
+
+Requirements:
+- Mobile-first UI
+- Clear visual distinction between Trips
+- Empty state handled gracefully
+
+---
+
+### Trip Scoping & Navigation
+- Only **one Trip** can be active at a time
+- Opening a Trip:
+  - Sets it as the active scope
+  - Ensures all future data belongs to it
+- There must be a clear way to return to the Trip Library
+- Archiving the active Trip must return the user to the Trip Library
+
+---
+
+## Explicitly Out of Scope (Do NOT Implement)
+
+- Maps or location data
+- Journal entries or photos
+- People, music, transport, or accommodations
+- AI features
+- Sharing, exporting, or analytics
+- Any UI or data for future milestones
+
+Trips are containers only at this stage.
+
+---
+
+## Data & Ownership Rules
+
+- Trip is the top-level container
+- Archiving must not delete data
+- Duplicate Trip names must be rejected with clear user feedback
+
+---
+
+## Error & Edge Case Handling
+
+- Duplicate Trip names → block creation
+- Empty Trip Library → valid state
+- Trips with no content → valid
+- App restart → Trips must persist
+
+---
+
+## Exit / Validation Criteria
+
+You are done when:
+- Multiple Trips can be created and persisted
+- Duplicate Trip names are prevented
+- One Trip can be opened at a time
+- Active Trip state is clearly visible
+- Archiving and restoring works correctly
+- No assumptions are made about future features
+
+---
+
+## Required Output Report
+
+When finished, report:
+1. Scope implemented
+2. Files added or changed
+3. Validation steps performed
+4. Confirmation that out-of-scope items were NOT implemented

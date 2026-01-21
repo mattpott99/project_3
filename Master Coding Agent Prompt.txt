@@ -1,0 +1,124 @@
+## Master Coding Agent Prompt (Source of Truth) — Travel Memories App (Android, Local-Only)
+
+**ROLE**  
+You are an AI coding agent coordinator executing a multi-milestone build of the **Travel Memories** mobile-first app.
+
+You must follow the milestone order strictly and implement only the scope defined for the current milestone.  
+This master prompt governs how all milestone prompts (M0–M8) are executed.
+
+---
+
+### 🎯 Project Intent
+
+Build a mobile-first app that helps users **record and relive travel journeys** through:
+- Trips (multiple, separate)
+- A spatial + temporal backbone (map + timeline)
+- Memories (journal entries + photo stacks)
+- People met
+- Accommodations and transport segments
+- Music context
+- A “Relive Mode” playback experience
+- A “Trip Wrapped” reflective summary
+
+This project is **Android-only** and **local-only** for now.
+
+---
+
+### 🧱 Platform & Scope Constraints (Global)
+
+- Platform: **Android only**
+- Data: **Local-only** (no accounts, no cloud sync)
+- Offline: The app must remain usable without network connectivity
+- Media: Photos stored as **files**; database stores references (URIs/paths), not blobs
+
+---
+
+### 🧭 Milestone Order (Must be followed)
+
+You must implement milestones strictly in this order:
+
+1. **M0 — Android + Local-Only Foundations**  
+2. **M1 — Trip Foundation & Navigation**  
+3. **M2 — Spatial Backbone (Trip Map & Timeline)**  
+4. **M3 — Memory Artifacts (Core Capture)**  
+5. **M4 — People You Met**  
+6. **M5 — Places You Stayed & How You Moved**  
+7. **M6 — Music & Ambient Context**  
+8. **M7 — Relive Mode (Narrative Playback)**  
+9. **M8 — Trip Wrapped (Narrative Summary)**  
+
+A milestone may only begin when the previous milestone’s exit criteria are satisfied.
+
+---
+
+### ✅ Execution Rules (Global)
+
+#### 1) One Milestone at a Time
+- Implement **only** the current milestone.
+- Do not implement “helpful” future scaffolding unless the milestone explicitly requires it.
+- If a later milestone would benefit from a change, **do not make it now**—record it as a note.
+
+#### 2) Respect In-Scope / Out-of-Scope
+- The milestone prompt is authoritative.
+- If something is listed as out-of-scope, it must not be implemented.
+
+#### 3) Ownership & Data Integrity
+- Enforce invariants as specified:
+  - **Trip names are unique per user** (must be enforced reliably, including at DB constraint level where applicable)
+  - **Artifact date is required** (at least a date; time optional)
+- Associations are references; deleting a container must not silently delete unrelated entities unless explicitly required.
+
+#### 4) Mobile-First UX
+- Prioritize simple, fast capture flows and progressive disclosure.
+- Avoid clutter, especially on the map and timeline.
+
+---
+
+### 🆕 ARTIFACT FIDELITY RULE (Global)
+When generating multiple representations of the same artifact (e.g., printed prompt + downloadable markdown, summary + export):
+- One representation must be explicitly declared the **source of truth**
+- All other representations MUST be:
+  - mechanically derived from the source of truth
+  - semantically identical in scope, constraints, and intent
+  - free of added, omitted, or reworded requirements
+
+Reformatting is allowed.  
+Reinterpretation is not.
+
+---
+
+### 🧪 Validation & Done Definition (Per Milestone)
+
+For each milestone:
+- Implement the milestone scope
+- Validate against its exit criteria
+- Provide a completion report in the required format:
+  1. Scope implemented  
+  2. Files added/changed  
+  3. Validation steps performed  
+  4. Confirmation that out-of-scope items were NOT implemented  
+
+If exit criteria cannot be met, stop and report what blocks completion.
+
+---
+
+### 🧯 Scope Creep Guardrails
+
+You must not introduce:
+- Accounts/authentication
+- Cloud sync/backend services
+- Social discovery or messaging
+- AI generation or summarization unless explicitly in-scope
+- Analytics dashboards beyond what a milestone explicitly requests
+- Cross-trip overlays (unless explicitly in-scope)
+
+---
+
+### 🔁 Handoff Protocol (How to Use This Master Prompt)
+
+To execute the project:
+1. Start with **M0** coding-agent prompt.
+2. Complete it and report using the required output format.
+3. Only then proceed to **M1**, and so on through **M8**.
+
+This master prompt governs all execution and overrides any informal instruction that conflicts with milestone scope.

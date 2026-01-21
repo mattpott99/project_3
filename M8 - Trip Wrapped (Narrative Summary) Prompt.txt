@@ -1,0 +1,136 @@
+## Coding Agent Prompt (Source of Truth) — M8: Trip Wrapped (Narrative Summary)
+
+**ROLE**  
+You are a coding agent implementing **Milestone M8 — Trip Wrapped (Narrative Summary)** for the **Travel Memories** mobile-first app.
+
+You must implement **only what is explicitly in scope**.  
+Do not speculate about future milestones.
+
+---
+
+### 🎯 Goal
+
+Implement **Trip Wrapped**: a per-Trip, **read-only, generated** reflective summary experience that:
+- Is distinct from Relive Mode (playback) in tone and purpose
+- Produces a curated narrative made of short “cards/chapters”
+- Derives insights only from existing Trip data and Relive Mode sequencing worldview
+- Never invents or infers missing data
+- Supports replay, and optional export as a static artifact (if supported in the stack)
+
+Trip Wrapped is ceremonial reflection, not social performance.
+
+---
+
+### 📦 In Scope (Must Implement)
+
+#### 1) Trip Wrapped Entry & Experience (Per-Trip)
+For an active Trip:
+- Provide a way to open Trip Wrapped
+- Trip Wrapped is read-only and must not edit underlying data
+- Present a linear, swipeable story experience (cards/chapters)
+- Allow replay and predictable regeneration from current data
+
+Trip Wrapped operates on **one Trip at a time**.
+
+---
+
+#### 2) Derived Summary Dimensions (Only from existing data)
+Trip Wrapped may derive and present (when data exists):
+- Trip duration (date range)
+- Locations visited and geographic footprint (when location data exists)
+- Distance traveled (only if computable from stored location/path data; do not infer)
+- Accommodation count and types (if recorded)
+- Transport modes used (if recorded)
+- People met / travelled with (if recorded)
+- Music Context frequency/themes (based on recorded entries, not external services)
+- Memory density/cadence (based on artifact counts across dates)
+
+Rules:
+- Only summarize what exists
+- Omit categories with no data (do not fill with guesses)
+- Clearly handle sparse trips gracefully
+
+---
+
+#### 3) Narrative Structure & Tone
+- Present a beginning-to-end narrative sequence
+- Tone must be:
+  - reflective
+  - warm
+  - non-judgmental
+  - non-comparative
+- No rankings, scores, or competitive metrics
+
+---
+
+#### 4) Visual Elements (Mobile-first)
+Trip Wrapped may include:
+- Highlighted photos (selected from recorded photo stacks without “best of” AI ranking; use deterministic selection rules such as earliest/representative/most recent if needed)
+- Simplified map visuals or route snapshots (if location data exists)
+- Text summaries and simple iconography for categories (transport mix, stays, music presence)
+
+All visuals must be derived from existing content.
+
+---
+
+#### 5) Determinism & Caching
+- Generation must be deterministic given the same data state
+- Output may be cached but must be regenerable at any time
+- Changes to underlying Trip data should reflect in regenerated Wrapped predictably
+
+---
+
+### 🚫 Explicitly Out of Scope (Do NOT Implement)
+
+- AI-generated rewriting of journal entries
+- AI-driven highlight selection or sentiment analysis
+- Cross-trip comparisons (year-in-review across trips)
+- Social sharing feeds, discovery, public profiles
+- Editing underlying data from within Wrapped
+- Analytics dashboards beyond the narrative itself
+- Any mutation of underlying data
+
+Trip Wrapped is reflection, not playback (Relive Mode) and not social.
+
+---
+
+### 🧠 Data & Ownership Rules
+
+- Trip Wrapped owns **no persistent source-of-truth data**
+- It is entirely derived from:
+  - Trip data (artifacts, people, stays, segments, music)
+  - Relive Mode sequencing worldview (chronology rules)
+- Wrapped generation must never modify existing entities
+
+---
+
+### ⚠️ Error Handling & Edge Cases
+
+You must handle:
+- Trips with sparse data → still produce a graceful Wrapped (shorter, fewer cards)
+- Missing categories (no music, no stays, etc.) → omit those cards
+- Missing location data → omit distance/map-dependent cards
+- Very long trips → ensure Wrapped remains concise and not overwhelming
+- Sensitive/private content → do not surface anything beyond what the user already recorded (no inference)
+
+---
+
+### ✅ Exit / Validation Criteria
+
+You are done when:
+- Users can view Trip Wrapped for any Trip
+- Wrapped content accurately reflects existing Trip data
+- Wrapped is clearly distinct from Relive Mode in tone and purpose
+- Generation is deterministic for a given data state
+- Wrapped does not modify any underlying data
+- No out-of-scope AI/social/comparison features are implemented
+
+---
+
+### 📤 Required Output Format
+
+When finished, report:
+1. **Scope implemented**
+2. **Files added/changed**
+3. **Validation steps performed**
+4. **Confirmation that out-of-scope items were NOT implemented**

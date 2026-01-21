@@ -1,0 +1,164 @@
+## Coding Agent Prompt (Source of Truth) — M5: Places You Stayed & How You Moved
+
+**ROLE**  
+You are a coding agent implementing **Milestone M5 — Places You Stayed & How You Moved** for the **Travel Memories** mobile-first app.
+
+You must implement **only what is explicitly in scope**.  
+Do not speculate about future milestones.
+
+---
+
+### 🎯 Goal
+
+Implement structural journey context inside a Trip:
+- **Accommodations** (places stayed)
+- **Transport Segments** (how you moved)
+- Timeline + map rendering for these structures
+- Ability to associate:
+  - **Photo Stacks**
+  - **People**
+  with Accommodations and Transport Segments
+
+This milestone adds “chapters” and “transitions” without becoming a planning/booking tool.
+
+---
+
+### 📦 In Scope (Must Implement)
+
+#### 1) Accommodation Entity (Trip-owned)
+An Accommodation represents a place the user stayed.
+
+Fields:
+- Name (**required**)
+- Type (e.g., hostel, hotel, campsite, etc.)
+- **Required start date**
+- Optional end date
+- Optional location (map point)
+- Optional notes
+
+Rules:
+- Belongs to exactly one Trip
+- Overlaps allowed
+- Valid even with no location
+
+---
+
+#### 2) Transport Segment Entity (Trip-owned)
+A Transport Segment represents movement between places.
+
+Fields:
+- Mode (train, bus, car, flight, ferry, walk, etc.)
+- **Required date**
+- Optional start time and end time
+- Optional origin location
+- Optional destination location
+- Optional notes
+
+Rules:
+- Belongs to exactly one Trip
+- Partial data allowed (e.g., only one endpoint)
+- No continuous tracking; user-entered only
+
+---
+
+#### 3) Timeline Integration (Trip-scoped)
+- Accommodations and Transport Segments must appear on the Trip timeline
+- They must be visually distinct from artifacts (journals/photos)
+- Ordering:
+  1. Date (required for these entities)
+  2. Time (if present)
+- Overlaps and conflicts must not break the timeline
+
+Selecting an Accommodation/Transport Segment should reveal its details, including attachments (below).
+
+---
+
+#### 4) Map Integration (Trip-scoped)
+- Accommodations appear as stationary points (when location exists)
+- Transport Segments appear as connecting paths (when endpoints exist)
+- Items without location must not break map rendering
+- Selecting map items should reveal details, including attachments (below)
+
+---
+
+#### 5) Associations: Photos and People (Contextual, not ownership)
+Users must be able to associate:
+- **Photo Stacks** to Accommodations and Transport Segments
+- **People** to Accommodations and Transport Segments
+
+Rules:
+- Associations are optional and many-to-many
+- Associations must NOT create duplicate top-level timeline items
+  - Photos attached here remain visible as part of the selected stay/segment context
+  - They still exist as artifacts in their primary location (standalone or attached to journals) per M3 rules
+- Deleting a stay/segment removes associations but does not delete photos/people/artifacts
+
+---
+
+#### 6) Create/Edit/Delete Flows (Mobile-first)
+Users must be able to:
+- Create and edit Accommodations and Transport Segments
+- Add/remove associated Photo Stacks and People
+- Delete Accommodations/Transport Segments
+
+Required fields must be enforced (start date / date as specified).
+
+---
+
+### 🚫 Explicitly Out of Scope (Do NOT Implement)
+
+- Booking details, confirmations, reservation emails
+- Cost tracking, budgeting
+- Ratings/reviews
+- Automatic transport detection
+- Route optimization or navigation
+- AI inference of stays or routes
+- Relive Mode / Wrapped behaviors
+- Sharing/export/analytics
+
+These are memory structures, not logistics tools.
+
+---
+
+### 🧠 Data & Ownership Rules
+
+- Accommodations and Transport Segments are **Trip-owned**
+- They reference (associate with) People and Photo Stacks; they do not own them
+- Artifacts remain governed by M3 rules (including journal↔photo attachment)
+- Person uniqueness rules remain governed by M4
+- Location remains optional; required dates must be enforced
+
+---
+
+### ⚠️ Error Handling & Edge Cases
+
+You must handle:
+- Accommodation with no end date (valid)
+- Accommodation with no location (timeline-only)
+- Transport Segment with only one endpoint (still render meaningfully)
+- Overlapping accommodation dates
+- Multiple segments on the same day
+- Associations to artifacts that later get deleted (remove association gracefully)
+- Trip switching without state leakage
+
+---
+
+### ✅ Exit / Validation Criteria
+
+You are done when:
+- Users can create/edit/delete Accommodations and Transport Segments within a Trip
+- These entities render correctly on the timeline and map (when location exists)
+- Users can associate Photo Stacks and People with stays and segments
+- Associations are contextual and do not create duplicate top-level timeline items
+- Removing a stay/segment does not delete artifacts or people
+- No out-of-scope logistics, detection, or narrative features are implemented
+
+---
+
+### 📤 Required Output Format
+
+When finished, report:
+1. **Scope implemented**
+2. **Files added/changed**
+3. **Validation steps performed**
+4. **Confirmation that out-of-scope items were NOT implemented**

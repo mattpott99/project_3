@@ -1,0 +1,144 @@
+## Coding Agent Prompt (Source of Truth) — M0: Android + Local-Only Foundations
+
+**ROLE**  
+You are a coding agent implementing **Milestone M0 — Android + Local-Only Foundations** for the **Travel Memories** app.
+
+You must implement **only what is explicitly in scope**.  
+Do not speculate about future milestones or add features early.
+
+This milestone is **foundational** and must be completed before M1.
+
+---
+
+### 🎯 Goal
+
+Establish the **project scaffolding and constraints** for an Android-only, local-first pet project so that all later milestones (M1–M8) can be implemented cleanly without rewrites.
+
+M0 is about **structure and invariants**, not user-facing features.
+
+---
+
+### 📦 In Scope (Must Implement)
+
+#### 1) Platform & App Shell
+- Target platform: **Android only**
+- Establish a basic app shell that:
+  - launches successfully
+  - supports navigation between screens
+  - can host a Trip Library screen later (M1)
+
+No feature UI is required yet beyond a minimal placeholder.
+
+---
+
+#### 2) Local Persistence Setup
+- Implement a **local-only persistence layer**:
+  - No accounts
+  - No authentication
+  - No network dependency
+- Data must persist across app restarts.
+- Choose a persistence approach suitable for:
+  - relational data
+  - future associations (Trips ↔ Artifacts ↔ People, etc.)
+
+You do **not** need to implement Trip storage yet, but the database infrastructure must be in place.
+
+---
+
+#### 3) Media Storage Strategy (Photos)
+- Establish how photos will be stored on-device:
+  - Photos stored as **files** in app-accessible storage
+  - Database stores only:
+    - file URI/path
+    - metadata references (date/time/location later)
+- Prove this strategy with a **minimal smoke test**:
+  - save a dummy file
+  - persist a reference to it
+  - reload it after app restart
+
+Do NOT implement photo UI or capture flows yet.
+
+---
+
+#### 4) Layer Boundaries (Code Organization)
+Set up a clear separation between:
+- **Domain layer**
+  - entities
+  - validation rules
+  - business invariants
+- **Data layer**
+  - database schema
+  - DAOs/repositories
+- **UI layer**
+  - screens
+  - navigation
+  - state holders
+
+This is structural only; minimal placeholder code is acceptable.
+
+---
+
+#### 5) Global Invariants (Enforced Early)
+Prepare the system to enforce:
+- **Unique Trip names per user**
+  - Must be enforceable at the database level (e.g., unique constraint/index)
+- **Date-required rule for artifacts**
+  - You do not implement artifacts yet
+  - You must reserve this invariant in the domain model so later milestones cannot bypass it
+
+---
+
+### 🚫 Explicitly Out of Scope (Do NOT Implement)
+
+- Trip creation UI or logic
+- Maps or location services
+- Timeline UI
+- Journal entries, photo stacks, or artifacts
+- People, accommodations, transport, or music
+- AI features
+- Relive Mode or Trip Wrapped
+- Sharing/export
+- Cloud sync, accounts, or backend services
+
+M0 is scaffolding only.
+
+---
+
+### 🧠 Data & Ownership Rules
+
+- All data is **local-only**
+- The device user implicitly owns all data
+- Uninstalling the app removes all data (acceptable for a pet project)
+- No migration strategy required beyond basic versioning discipline
+
+---
+
+### ⚠️ Error Handling & Edge Cases
+
+You must handle:
+- Database initialization failure → fail gracefully (no crash loops)
+- App restart → persistence layer reinitializes correctly
+- File storage access issues → handled safely (no silent corruption)
+
+---
+
+### ✅ Exit / Validation Criteria
+
+You are done when:
+- The Android app launches with a stable app shell
+- Local database infrastructure is in place and usable
+- Data persists across app restarts
+- Media storage strategy is proven with a simple file + DB reference test
+- Codebase is clearly separated into domain / data / UI layers
+- Database-level support for unique Trip names is achievable
+- No user-facing features beyond scaffolding are implemented
+
+---
+
+### 📤 Required Output Format
+
+When finished, report:
+1. **Scope implemented**
+2. **Files added/changed**
+3. **Validation steps performed**
+4. **Confirmation that out-of-scope items were NOT implemented**

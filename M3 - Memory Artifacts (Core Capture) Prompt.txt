@@ -1,0 +1,174 @@
+## Coding Agent Prompt (Source of Truth) — M3: Memory Artifacts (Core Capture)
+
+**ROLE**  
+You are a coding agent implementing **Milestone M3 — Memory Artifacts (Core Capture)** for the **Travel Memories** mobile-first app.
+
+You must implement **only what is explicitly in scope**.  
+Do not speculate about future milestones.
+
+---
+
+### 🎯 Goal
+
+Implement the first meaningful user content inside a Trip:
+- **Journal Entries**
+- **Photo Stacks** (multi-image)
+- Ability to **attach photo stacks to journal entries**
+- Required **date** for all artifacts (time optional)
+- Optional **location**, including **EXIF metadata prefill** for photos
+- Render artifacts on the **Trip timeline** and (when located) on the **Trip map**
+
+This milestone adds memories while keeping relationships simple and future-proof.
+
+---
+
+### 📦 In Scope (Must Implement)
+
+#### 1) Artifact Types (Trip-scoped)
+
+##### A) Journal Entry
+- Belongs to exactly one Trip (requires active Trip scope)
+- Fields:
+  - Text (user-authored; may be empty if photos are attached)
+  - Optional title
+  - **Required date**
+  - Optional time
+  - Optional location (map point / reference to Trip spatial system)
+- May have **attached Photo Stacks** (see below)
+
+A Journal Entry must be valid with:
+- text only
+- photos only (attached)
+- text + photos
+
+##### B) Photo Stack
+- Belongs to exactly one Trip (requires active Trip scope)
+- Contains **1–N images** as a single artifact
+- Fields:
+  - Optional caption (stack-level)
+  - **Required date**
+  - Optional time
+  - Optional location
+- May exist:
+  - standalone (top-level timeline item)
+  - attached to a Journal Entry (contextual content within the entry)
+
+**Metadata rule (photos):**
+- On photo import, attempt to extract EXIF metadata to prefill:
+  - date/time (if available)
+  - location (if GPS exists)
+- Metadata is a default only; user must be able to override.
+- If EXIF is missing or ambiguous, require user to provide at least the **date**.
+
+---
+
+#### 2) Mobile-first Capture Flows
+Users must be able to:
+- Create a Journal Entry quickly
+- Create a standalone Photo Stack (select/upload multiple images)
+- Attach a Photo Stack to a Journal Entry
+- Set/edit:
+  - required date
+  - optional time
+  - optional location
+
+Capture must:
+- Minimize required input beyond the required date
+- Support offline creation (queue/sync later if applicable to your stack)
+- Allow post-hoc editing without data loss
+
+---
+
+#### 3) Timeline Integration (Trip-scoped)
+- Timeline must display:
+  - Journal Entries (top-level)
+  - Stand-alone Photo Stacks (top-level)
+- Ordering:
+  1. **Date** (required)
+  2. Time (if present)
+- Journal Entries that contain attached Photo Stacks show those photos **within the entry UI**, not as duplicate top-level timeline items.
+
+Timeline must tolerate:
+- many items
+- incomplete optional fields
+- identical dates/times
+
+---
+
+#### 4) Map Integration (Trip-scoped)
+- Artifacts with location appear on the Trip map as selectable markers.
+- Selecting a marker reveals the artifact (journal entry or photo stack).
+- Artifacts without location remain timeline-only and must not degrade map usability.
+
+---
+
+#### 5) Editing & Persistence
+Users must be able to:
+- Edit Journal Entry text/title/date/time/location
+- Edit Photo Stack caption/date/time/location
+- Add/remove images within a Photo Stack
+- Attach/detach Photo Stacks to/from Journal Entries
+
+Rules:
+- **Date is always required**; edits must preserve validity.
+- Deleting an artifact removes it everywhere it appears.
+- Editing updates timeline and map views consistently.
+
+---
+
+### 🚫 Explicitly Out of Scope (Do NOT Implement)
+
+- AI-assisted writing or summarization
+- People tagging
+- Accommodations or transport segments
+- Music
+- Relive Mode or Wrapped
+- Sharing/export/analytics
+- Automatic detection of content beyond EXIF prefill
+- Advanced formatting beyond basic text/caption
+
+Artifacts are **atomic** at this stage (except the allowed journal↔photo attachment).
+
+---
+
+### 🧠 Data & Ownership Rules
+
+- All artifacts belong to exactly one Trip.
+- Photo Stacks attached to Journal Entries are still Trip-owned artifacts; the attachment is an association.
+- No artifact can exist without an active Trip scope.
+- Location is optional everywhere; date is required everywhere.
+
+---
+
+### ⚠️ Error Handling & Edge Cases
+
+You must handle:
+- Photo stacks with EXIF missing → prompt for required date
+- Incorrect camera clocks → user override always wins
+- Journal entry created with photos only (no text) → valid
+- Standalone photo stack vs attached photo stack presentation rules (no duplicate timeline items)
+- Items with same date/time → stable ordering (deterministic)
+- Map selection for artifacts with location; artifacts with no location do not appear on map
+
+---
+
+### ✅ Exit / Validation Criteria
+
+You are done when:
+- Users can create and persist Journal Entries and Photo Stacks within a Trip
+- Photo Stacks support multiple images (1–N)
+- Photo Stacks can be attached to Journal Entries
+- All artifacts require at least a **date** at creation (time optional)
+- EXIF metadata can prefill date/time/location for photos when available (user can override)
+- Artifacts render correctly on Trip timeline; located artifacts render on Trip map
+- No out-of-scope features are implemented
+
+---
+
+### 📤 Required Output Format
+
+When finished, report:
+1. **Scope implemented**
+2. **Files added/changed**
+3. **Validation steps performed**
+4. **Confirmation that out-of-scope items were NOT implemented**

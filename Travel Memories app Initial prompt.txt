@@ -1,0 +1,20 @@
+Travel Memories app
+
+Allows users to record memories from a long holiday, road trip or period of travelling.
+
+Some key features:
+
+Record journal entries (perhaps with AI assistance) 
+Upload photos
+Remember who you meet along the way (perhaps with profiles so you can see where your friends have been)
+Where you stayed - Hostels, Hotels or Campsites
+Note down what music you listened to
+What method of transport you used
+A unique UI that allows you to plot your journey on a map
+I want the app to tie all of these features together, allowing the user to feel like they are reliving their experiences. 
+
+Feel free to suggest more features...
+
+A stretch feature could be to add an experience similar to Spotify wrapped that would present a narrative history of their adventure.
+
+Don't write any code, I just want to discuss and plan this with you.

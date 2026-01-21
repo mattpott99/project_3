@@ -1,0 +1,119 @@
+## Coding Agent Prompt (Source of Truth) — M6: Music & Ambient Context
+
+**ROLE**  
+You are a coding agent implementing **Milestone M6 — Music & Ambient Context** for the **Travel Memories** mobile-first app.
+
+You must implement **only what is explicitly in scope**.  
+Do not speculate about future milestones.
+
+---
+
+### 🎯 Goal
+
+Implement a lightweight **music context** layer that helps users remember the atmosphere of a Trip:
+- Add **Music Context** entries to a Trip (descriptive references, not playback)
+- Associate music contexts with:
+  - the Trip as a whole
+  - a time range within the Trip
+  - Accommodations
+  - Transport Segments
+  - (Optionally) Journal Entries or Photo Stacks
+- Surface music contexts subtly on the Trip timeline
+
+This milestone adds emotional texture without turning the app into a music product.
+
+---
+
+### 📦 In Scope (Must Implement)
+
+#### 1) Music Context Entity (Trip-owned)
+A Music Context represents music associated with a period of a Trip.
+
+Fields:
+- One or more music references (track / album / artist) as lightweight descriptors (search or free text)
+- **Required date**
+- Optional start time and end time
+- Optional notes (e.g., “road trip playlist”, “listened on repeat”)
+
+Rules:
+- Belongs to exactly one Trip
+- Overlaps allowed
+- Ambiguity allowed (“a lot of folk music”)
+
+No playback required.
+
+---
+
+#### 2) Associations (Optional, Many-to-many)
+Users must be able to associate a Music Context with:
+- A Trip (implicitly by ownership)
+- A time range (via date + optional times)
+- An Accommodation
+- A Transport Segment
+- (Optionally) a Journal Entry
+- (Optionally) a Photo Stack
+
+Rules:
+- Associations are optional and many-to-many
+- Deleting a Music Context removes its associations but does not delete anything else
+- Deleting an associated entity (e.g., accommodation) must remove associations gracefully
+
+---
+
+#### 3) Capture & Editing Flows (Mobile-first)
+Users must be able to:
+- Create a Music Context entry in an active Trip
+- Add 1–N music references to it
+- Edit date/times/notes/music references
+- Set or change associations to Trip elements
+
+Required field: **date**.
+
+---
+
+#### 4) Timeline Integration (Trip-scoped)
+- Music Contexts must appear on the Trip timeline as ambient markers
+- They must be visually distinct and non-dominant
+- Ordering rules:
+  1. Date (required)
+  2. Start time (if present)
+
+Music must not clutter the timeline on small screens.
+
+---
+
+### 🚫 Explicitly Out of Scope (Do NOT Implement)
+
+- Music playback
+- Spotify/Apple Music account linking
+- Automatic listening history import
+- Recommendations or mood detection
+- AI summarization
+- Relive Mode / Wrapped behaviors
+- Sharing/export/analytics
+
+Music here is annotation, not consumption.
+
+---
+
+### 🧠 Data & Ownership Rules
+
+- Music Contexts are Trip-owned
+- Music references are descriptive (lightweight), not full media objects
+- Associations are references only (no ownership transfer)
+- Missing time-of-day data must never block creation
+
+---
+
+### ⚠️ Error Handling & Edge Cases
+
+You must handle:
+- Duplicate or vague music entries (allowed)
+- Overlapping contexts (allowed)
+- Contexts with date only, no times (valid)
+- Deleted associated entities (remove association safely)
+- Timeline rendering with many music entries without dominating artifacts
+
+---
+
+### ✅ Exit / Validation Crite
